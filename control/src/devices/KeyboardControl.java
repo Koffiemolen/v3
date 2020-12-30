@@ -1,14 +1,11 @@
-package nl.StijveHark.Control;
+package devices;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-// Make it more object orientated
-// https://docs.oracle.com/javase/tutorial/uiswing/events/keylistener.html
-/*
+/*  Make it more object orientated
+    https://docs.oracle.com/javase/tutorial/uiswing/events/keylistener.html
     Boolean array of size 256, which will be used to store the state of the keys on the keyboard.
-
-
  */
 
 public class KeyboardControl implements KeyListener {

@@ -1,6 +1,6 @@
 package nl.StijveHark.Game;
 
-import nl.StijveHark.Control.KeyboardControl;
+import devices.KeyboardControl;
 
 import javax.swing.*;
 import java.awt.*;

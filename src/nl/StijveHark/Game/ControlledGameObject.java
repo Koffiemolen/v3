@@ -4,7 +4,7 @@ package nl.StijveHark.Game;
 // Child of GameObject
 // Implements Moveable so it is forced to have a move method
 
-import nl.StijveHark.Control.KeyboardControl;
+import devices.KeyboardControl;
 import java.awt.*;
 
 public abstract class ControlledGameObject extends GameObject implements Moveable{
