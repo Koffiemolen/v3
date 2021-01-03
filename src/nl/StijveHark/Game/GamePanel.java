@@ -1,6 +1,7 @@
 package nl.StijveHark.Game;
 
 import devices.KeyboardControl;
+import sound.SoundFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -70,7 +71,7 @@ public class GamePanel extends JPanel {
     private File bossSound = new File("sounds/bossSound.wav");
     private File bonusSound = new File("sounds/bonusSound.wav");
     private File damageSound = new File("sounds/damageSound.wav");
-
+    SoundFactory sounds = new SoundFactory();
 
     // Extra methods
 
@@ -102,6 +103,7 @@ public class GamePanel extends JPanel {
             //TODO fix sound
             // Plays boss roar
             // AudioPlayer.player.start(bossSoundAudio);
+            sounds.alienBoss();
             alien = new Alien(20, 20, 3, 0, 100, null, 150, 150);
             alienList.add(alien);
         }
@@ -178,6 +180,7 @@ public class GamePanel extends JPanel {
         if (control.getKeyStatus(32)) {
             if (playerCanFire) {
                 playerWeapon = new PlayerWeapon(playerShip.getXCoordinateValue() + 22, playerShip.getYCoordinateValue() - 20, 0, Color.RED);
+                sounds.projectile();
                 //TODO play projectile sound
                 playerCanFire = false;
             }
@@ -197,6 +200,7 @@ public class GamePanel extends JPanel {
                         alienBomb = new AlienBomb(alienList.get(index).getXCoordinateValue(), alienList.get(index).getYCoordinateValue(), 0, Color.YELLOW);
                         alienBombList.add(alienBomb);
                         //TODO play alien bomb sound
+                        sounds.alienBomb();
                     }
                     alienCanFire = false;
                 }
@@ -216,6 +220,7 @@ public class GamePanel extends JPanel {
                         alienBombList.add(alienBomb2);
                         alienBombList.add(alienBomb3);
                         //AudioPlayer.player.start(beamSoundAudio); // Plays beam sound for boss
+                        sounds.alienBoss();
                     }
                     alienCanFire = false;
                 }
@@ -344,6 +349,7 @@ public class GamePanel extends JPanel {
             for (int index = 0; index < alienList.size(); index++) {
                 if (playerWeapon.isColliding(alienList.get(index))) {
                     // TODO Play hit sound if enemy is hit
+                    sounds.explosion();
                     playerWeapon = new PlayerWeapon(0, 0, 0, null);
                     playerCanFire = true;
 
