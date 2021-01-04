@@ -7,9 +7,9 @@ import java.awt.*;
 
 public class Ship extends ControlledGameObject{
 
-    ImageIcon ship = new ImageIcon("images/shipSkin.gif");
-    ImageIcon bonusAlien = new ImageIcon("images/bonusEnemySkin.gif");
-    ImageIcon lifeCounter = new ImageIcon("images/shipSkinSmall.gif");
+    private final ImageIcon shipImage = new ImageIcon("images/shipSkin.gif");
+    private final ImageIcon bonusAlien = new ImageIcon("images/bonusEnemySkin.gif");
+    private final ImageIcon lifeCounter = new ImageIcon("images/shipSkinSmall.gif");
 
     // Constructor for all ship objects
     public Ship(int xValue, int yValue, Color color, KeyboardControl control) {
@@ -29,7 +29,7 @@ public class Ship extends ControlledGameObject{
     // Player controlled ship
     @Override
     public void draw(Graphics graphics) {
-        ship.paintIcon(null, graphics, this.getXCoordinateValue(), this.getYCoordinateValue());
+        shipImage.paintIcon(null, graphics, this.getXCoordinateValue(), this.getYCoordinateValue());
     }
 
     // Gets the hitbox for all the ship objectes

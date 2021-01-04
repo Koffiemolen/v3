@@ -4,8 +4,8 @@ import java.awt.*;
 
 public class Shield extends GameObject{
 
-    int shieldWidth;
-    int shieldHeight;
+    private int shieldWidth;
+    private int shieldHeight;
 
     public Shield(int xValue, int yValue, int shieldWidth, int shieldHeight, Color color) {
         super(xValue, yValue, color);

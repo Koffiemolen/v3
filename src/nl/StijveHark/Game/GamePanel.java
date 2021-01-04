@@ -28,13 +28,13 @@ public class GamePanel extends JPanel {
     // Store Highscores in file
     File file = new File("Highscore.txt");
     // Add some extra information about Timer
-    private KeyboardControl control;
+    private final KeyboardControl control;
     private int score = 0;
     private int level = 1;
     private int numberOfLives = 3;
     private int highScore;
-    private int markerX;
-    private int markerY;
+    private int hitmarkerX;
+    private int hitmarkerY;
     // Added Objects
     private Ship playerShip;
     private Ship singleLife;
@@ -53,9 +53,9 @@ public class GamePanel extends JPanel {
     private boolean hitMarker = false;
 
     // ArrayLists
-    private ArrayList<Ship> lifeList = new ArrayList<>();
+    private final ArrayList<Ship> lifeList = new ArrayList<>();
     private ArrayList<Ship> bonusAlienList = new ArrayList<>();
-    private ArrayList<Alien> alienList = new ArrayList<>();
+    private final ArrayList<Alien> alienList = new ArrayList<>();
     private ArrayList<Shield> shieldList = new ArrayList<>();
     private ArrayList<AlienBomb> alienBombList = new ArrayList<>();
     //TODO next level → new background
@@ -149,9 +149,9 @@ public class GamePanel extends JPanel {
             if (hitMarker) {
                 graphics.setColor(Color.WHITE);
                 if (level != 3 && level != 6 && level != 9 && level != 12) {
-                    graphics.drawString("+ 100", markerX + 20, markerY -= 1);
+                    graphics.drawString("+ 100", hitmarkerX + 20, hitmarkerY -= 1);
                 } else {
-                    graphics.drawString("- 1", markerX + 75, markerY += 1);
+                    graphics.drawString("- 1", hitmarkerX + 75, hitmarkerY += 1);
                 }
             }
         }
@@ -338,7 +338,8 @@ public class GamePanel extends JPanel {
         //325 - Move the projectile when it is fired
         // TODO when difficulty level is chosen use different projectile speed
         if (playerWeapon != null) {
-            playerWeapon.setYCoordinateValue(playerWeapon.getYCoordinateValue() - 15);
+            playerWeapon.setYCoordinateValue(playerWeapon.getYCoordinateValue() - 30);
+            // playerWeapon.setYCoordinateValue(playerWeapon.getYCoordinateValue() - 15);
             // When projectile has reached the border the player can shoot again.
             // TODO based on difficulty level player should be able to fire 1 or 3 shots in burst
             if (playerWeapon.getYCoordinateValue() < 0) {
@@ -359,8 +360,8 @@ public class GamePanel extends JPanel {
                         hitMarker = true;
                         // To present the marker "+100 Well done!" near the correct alien that was shot
                         // It is needed to retrieve those coordinates x and y
-                        markerX = alienList.get(index).getXCoordinateValue();
-                        markerY = alienList.get(index).getYCoordinateValue();
+                        hitmarkerX = alienList.get(index).getXCoordinateValue();
+                        hitmarkerY = alienList.get(index).getYCoordinateValue();
                         // After the marker has shown alien can be removed
                         alienList.remove(index);
                     }
@@ -370,8 +371,8 @@ public class GamePanel extends JPanel {
                     if (level == 3 || level == 6 || level == 9 || level == 12) {
                         hitMarker = true;
                         // Alien boss has more health so every time when the alien boss is hit -1 will appear
-                        markerX = alienList.get(index).getXCoordinateValue();
-                        markerY = alienList.get(index).getYCoordinateValue() + 165;
+                        hitmarkerX = alienList.get(index).getXCoordinateValue();
+                        hitmarkerY = alienList.get(index).getYCoordinateValue() + 165;
                         bossHealth -= 1;
                         // check if alien boss health 0 → alien boss is dead
                         if (bossHealth == 0) {
