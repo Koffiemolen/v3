@@ -1,9 +1,15 @@
-package nl.StijveHark.Game;
+package MockClasses;
+
+import nl.StijveHark.Game.GamePanel;
+import nl.StijveHark.Game.MovingGameObject;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class Alien extends MovingGameObject{
+public class AlienMock extends MovingGameObject {
+    private int alienType;
+    private int alienWidth;
+    private int alienHeight;
 
     private final ImageIcon alien1 = new ImageIcon("images/alien1Skin.gif");
     private final ImageIcon alien2 = new ImageIcon("images/alien2Skin.gif");
@@ -12,16 +18,13 @@ public class Alien extends MovingGameObject{
     private final ImageIcon alienBoss2 = new ImageIcon("images/boss2.gif");
     private final ImageIcon alienBoss3 = new ImageIcon("images/boss3.gif");
 
-    private int alienType;
-    private int alienWidth;
-    private int alienHeight;
-
-    public Alien(int xValue, int yValue, int velocityX, int velocityY, int alienType, Color color, int alienWidth, int alienHeight) {
+    public AlienMock(int xValue, int yValue, int velocityX, int velocityY, int alienType, Color color, int alienWidth, int alienHeight) {
         super(xValue, yValue, velocityX, velocityY, color);
         this.alienType = alienType;
         this.alienWidth = alienWidth;
         this.alienHeight = alienHeight;
     }
+
 
     public void draw(Graphics g) {
         // Varient 1
@@ -56,7 +59,6 @@ public class Alien extends MovingGameObject{
 
     @Override
     public void move(){
-        xCoordinateValue += velocityX;
     }
 
     public int getAlienType() {
@@ -71,4 +73,3 @@ public class Alien extends MovingGameObject{
         return alienHeight;
     }
 }
-

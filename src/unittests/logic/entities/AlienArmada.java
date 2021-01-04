@@ -1,5 +1,6 @@
 package logic.entities;
 
+import MockClasses.AlienMock;
 import nl.StijveHark.Game.Alien;
 import nl.StijveHark.Game.MovingGameObject;
 
@@ -9,28 +10,24 @@ import java.util.List;
 import java.util.Random;
 
 public class AlienArmada {
-    private final ArrayList<Alien> aliens;
+    private ArrayList<AlienMock> aliens;
 
-    public AlienArmada(){
-        this(new ArrayList<>());
-    }
-
-    public AlienArmada(ArrayList<Alien> aliens){
+    public AlienArmada(ArrayList<AlienMock> aliens){
         this.aliens = aliens;
     }
 
-    public List<Alien> getAliens(){
+    public List<AlienMock> getAliens(){
         return Collections.unmodifiableList(this.aliens);
     }
 
     // Method to add aliens to collection
-    public boolean addAlien(Alien alien){
+    public boolean addAlien(AlienMock alien){
         this.aliens.add(alien);
         return true;
     }
 
     // Method to add aliens to specific location
-    public boolean addAlien(int index, Alien alien){
+    public boolean addAlien(int index, AlienMock alien){
         this.aliens.add(index, alien);
         return true;
     }
@@ -41,7 +38,7 @@ public class AlienArmada {
         int alienCount = alienArmada.alienCount();
         for (int index = 0; index < alienCount; index++){
             MovingGameObject alien = alienArmada.takeFirstAlien();
-            this.aliens.add(0, (Alien) alien);
+            this.aliens.add(0, (AlienMock) alien);
         }
     }
 

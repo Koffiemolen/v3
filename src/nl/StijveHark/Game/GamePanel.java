@@ -16,7 +16,7 @@ public class GamePanel extends JPanel {
 
     private Timer gameTimer;
     // private static int bossHealth = 30;
-    private static int bossHealth = 30;
+    private static int bossHealth = 10;
 
     // Size of window and framerate
     private final int gameWidth = 800;
@@ -422,7 +422,7 @@ public class GamePanel extends JPanel {
                 // Todo bonus alien speed dependent on difficulty level
                 bonusAlienList.get(index).setXCoordinateValue(bonusAlienList.get(index).getXCoordinateValue() + (2));
                 // TODO replace 800 for boardwidth variable
-                if (bonusAlienList.get(index).getXCoordinateValue() > 800) {
+                if (bonusAlienList.get(index).getXCoordinateValue() > gameWidth) {
                     bonusAlienList.remove(index);
                     newBonusAlien = true;
                 }
@@ -452,7 +452,7 @@ public class GamePanel extends JPanel {
                     // TODO implement alien bomb drop speed variable
                     alienBombList.get(index).setYCoordinateValue(alienBombList.get(index).getYCoordinateValue() + 4);
                     // TODO implement board variable parameter
-                    if (alienBombList.get(index).getYCoordinateValue() > 800) {
+                    if (alienBombList.get(index).getYCoordinateValue() > gameHeight) {
                         alienBombList.remove(index);
                     }
                 }
@@ -467,7 +467,7 @@ public class GamePanel extends JPanel {
                     // The higher the level the increased speed of the boss
                     alienBombList.get(index).setYCoordinateValue(alienBombList.get(index).getYCoordinateValue() + (2 * level));
                     // TODO boardheight variable
-                    if (alienBombList.get(index).getYCoordinateValue() > 800) {
+                    if (alienBombList.get(index).getYCoordinateValue() > gameHeight) {
                         alienBombList.remove(index);
                     }
                 }
@@ -582,7 +582,7 @@ public class GamePanel extends JPanel {
             bonusAlienList.clear();
             lifeList.clear();
             level += 1;
-            bossHealth = 30;
+            bossHealth = 10 * level;
             setupGame();
             // TODO play victory song
         }
