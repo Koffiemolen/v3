@@ -1,9 +1,7 @@
 package logic.entities;
 
 import MockClasses.AlienMock;
-import nl.StijveHark.Game.Alien;
 import nl.StijveHark.Game.MovingGameObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,5 +73,9 @@ public class AlienArmada {
     // Shuffle the alien collection
     protected void shuffleAliens(){
         Collections.shuffle(this.aliens, new Random());
+    }
+
+    public MovingGameObject getFirstAlien(){
+        return this.aliens.get(0);
     }
 }
