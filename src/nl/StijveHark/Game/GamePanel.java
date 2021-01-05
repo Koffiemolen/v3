@@ -15,7 +15,6 @@ import java.util.Scanner;
 public class GamePanel extends JPanel {
 
     private Timer gameTimer;
-    // private static int bossHealth = 30;
     private static int bossHealth = 10;
 
     // Size of window and framerate
@@ -23,11 +22,11 @@ public class GamePanel extends JPanel {
     private final int gameHeight = 800;
     private final int framesPerSecond = 120;
 
-    // Stuff to keep track of everything
     Random random = new Random();
+
     // Store Highscores in file
     File file = new File("Highscore.txt");
-    // Add some extra information about Timer
+
     private final KeyboardControl control;
     private int score = 0;
     private int level = 1;
@@ -35,7 +34,8 @@ public class GamePanel extends JPanel {
     private int highScore;
     private int hitmarkerX;
     private int hitmarkerY;
-    // Added Objects
+
+    // Objects
     private Ship playerShip;
     private Ship singleLife;
     private Ship bonusAlien;
@@ -58,19 +58,10 @@ public class GamePanel extends JPanel {
     private final ArrayList<Alien> alienList = new ArrayList<>();
     private ArrayList<Shield> shieldList = new ArrayList<>();
     private ArrayList<AlienBomb> alienBombList = new ArrayList<>();
-    //TODO next level → new background
+
     private ImageIcon background = new ImageIcon("images/backgroundSkin.jpg");
 
     // Audio files
-    private File beamSound = new File("sounds/alienBeam.wav");
-    private File bulletSound = new File("sounds/bulletSound.wav");
-    private File levelUpSound = new File("sounds/levelUpSound.wav");
-    private File deathSound = new File("sounds/deathSound.wav");
-    private File hitmarkerSound = new File("sounds/hitmarkerSound.wav");
-    private File shieldSound = new File("sounds/shieldSound.wav");
-    private File bossSound = new File("sounds/bossSound.wav");
-    private File bonusSound = new File("sounds/bonusSound.wav");
-    private File damageSound = new File("sounds/damageSound.wav");
     SoundFactory sounds = new SoundFactory();
 
     // Extra methods
@@ -81,11 +72,11 @@ public class GamePanel extends JPanel {
     }
 
 
-    //102 - Setting up the game
+    // Setting up the game
 
     public final void setupGame() {
-
-        //106 - Formula for normal levels
+        // TODO use modules as evaluation
+        // Formula for normal levels
         if (level != 3 && level != 6 && level != 9 && level != 12) {
             // number or rows
             for (int row = 0; row < 6; row++) {
@@ -98,37 +89,48 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //117 - Formula for boss levels
+        // TODO use modules as evaluation
+        // Formula for boss levels
         if (level == 3 || level == 6 || level == 9 || level == 12) {
-            //TODO fix sound
-            // Plays boss roar
-            // AudioPlayer.player.start(bossSoundAudio);
             sounds.alienBoss();
             alien = new Alien(20, 20, 3, 0, 100, null, 150, 150);
             alienList.add(alien);
         }
 
-        //123 - Help for beginners in level 1
+        //Help for beginners in level 1
         if (level == 1) {
-            JOptionPane.showMessageDialog(null, "Welcome to Space Intruders!\n\nTHINGS TO KNOW:\n\n- Use left/right arrow keys to move\n- Press spacebar to shoot\n- The enemies get faster every level" + "\n- BOSS every 3 levels\n- A bonus enemy will appear randomly\n- Shoot it for extra points!\n- Press R to reset high score\n- All pixel art is original\n- PLAY WITH SOUND\n\nHAVE FUN!");
+            JOptionPane.showMessageDialog(null, "Welcome to Space Intruders!\n" +
+                    "\n" +
+                    "RULES:\n" +
+                    "\n" +
+                    "- Use ← and → keys to move\n" +
+                    "- Hit spacebar to shoot\n" +
+                    "- Aliens will go faster with every level" +
+                    "\n" +
+                            "- Big Alien BOSS every 3 levels\n" +
+                            "- A bonus enemy will appear randomly\n" +
+                            "- Shoot it for extra points!\n" +
+                            "- Press R to reset high score\n" +
+                            "- PLAY WITH SOUND\n" +
+                            "\n" +
+                            "HAVE FUN!");
 
         }
 
-        //128 - Resets all controller movement
+        // Resets all controller movement
         control.resetController();
 
-        //131 - Sets the players ship values
+        // Sets the players ship values
         // TODO Make player positions relative to window size
-//        playerShip = new Ship(375, 730, null, controller);
         playerShip = new Ship(375, 730, null, control);
 
-        //135 - Set life counter
+        // Set life counter
         for (int column = 0; column < numberOfLives; column++) {
             singleLife = new Ship(48 + (column * 20), 10, Color.WHITE, null);
             lifeList.add(singleLife);
         }
 
-        //140 - Set the values for 3 rows and 3 columns of shields
+        // Set the values for 3 rows and 3 columns of shields
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
                 shield = new Shield(100 + (column * 250), 650 - (row * 10), 70, 10, Color.RED);
@@ -148,6 +150,7 @@ public class GamePanel extends JPanel {
         if (playerWeapon != null) {
             if (hitMarker) {
                 graphics.setColor(Color.WHITE);
+                // TODO use modules as evaluation
                 if (level != 3 && level != 6 && level != 9 && level != 12) {
                     graphics.drawString("+ 100", hitmarkerX + 20, hitmarkerY -= 1);
                 } else {
@@ -156,17 +159,16 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //168 - Draw ship: player
-//        System.out.println("draw player ship");
+        // Draw ship: player
         playerShip.draw(graphics);
-//        System.out.println("Player ship drawn");
 
-        //171 - Draw 3 evenly-spaced shields
+
+        // Draw 3 evenly-spaced shields
         for (int index = 0; index < shieldList.size(); index++) {
             shieldList.get(index).draw(graphics);
         }
 
-        //176 - Draw 3 different kinds of aliens
+        // Draw the aliens from arraylist alienList different kinds of aliens
         // TODO expand to more aliens
         try {
             for (int index = 0; index < alienList.size(); index++) {
@@ -176,30 +178,28 @@ public class GamePanel extends JPanel {
 
         }
 
-        // 185 -  Draw player projectile on space bar press
+        // Draw player projectile on space bar press
         if (control.getKeyStatus(32)) {
             if (playerCanFire) {
                 playerWeapon = new PlayerWeapon(playerShip.getXCoordinateValue() + 22, playerShip.getYCoordinateValue() - 20, 0, Color.RED);
                 sounds.projectile();
-                //TODO play projectile sound
                 playerCanFire = false;
             }
         }
 
-        //193 - Only draw player projectile after key press
+        // Only draw player projectile after key press
         if (playerWeapon != null) {
             playerWeapon.draw(graphics);
         }
 
-        //198 - Make the aliens shoot randomly
+        // Make the aliens shoot randomly
+        // TODO use modules as evaluation
         if (level != 3 && level != 6 && level != 9 && level != 12) {
             if (alienCanFire) {
                 for (int index = 0; index < alienList.size(); index++) {
                     if (random.nextInt(30) == index) {
-//                        beam =      new Beam     (enemyList.get(index).getXPosition(),        enemyList.get(index).getYPosition(), 0, Color.YELLOW);
                         alienBomb = new AlienBomb(alienList.get(index).getXCoordinateValue(), alienList.get(index).getYCoordinateValue(), 0, Color.YELLOW);
                         alienBombList.add(alienBomb);
-                        //TODO play alien bomb sound
                         sounds.alienBomb();
                     }
                     alienCanFire = false;
@@ -207,12 +207,12 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //221 - Generates beams at a faster rate for boss
+        // Generates beams at a faster rate for boss
+        // TODO use modules as evaluation
         if (level == 3 || level == 6 || level == 9 || level == 12) {
             if (alienCanFire) {
                 for (int index = 0; index < alienList.size(); index++) {
                     if (random.nextInt(5) == index) {
-//                        beam =      new Beam     (enemyList.       get(index).getXPosition() + 75,              enemyList.get(index).getYPosition() + 140, 0, Color.YELLOW);
                         alienBomb = new AlienBomb(alienList.get(index).getXCoordinateValue() + 75, alienList.get(index).getYCoordinateValue() + 140, 0, Color.YELLOW);
                         alienBomb2 = new AlienBomb(alienList.get(index).getXCoordinateValue(), alienList.get(index).getYCoordinateValue() + 110, 0, Color.YELLOW);
                         alienBomb3 = new AlienBomb(alienList.get(index).getXCoordinateValue() + 150, alienList.get(index).getYCoordinateValue() + 110, 0, Color.YELLOW);
@@ -227,12 +227,12 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //228 - Draw the alien bombs
+        // Draw the alien bombs
         for (int index = 0; index < alienBombList.size(); index++) {
             alienBombList.get(index).draw(graphics);
         }
 
-        //232 - Generate random bonus enemy
+        // Generate random bonus enemy
         if (newBonusAlien) {
             if (random.nextInt(3000) == 1500) {
                 bonusAlien = new Ship(-50, 30, Color.RED, null);
@@ -241,31 +241,32 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //240 - Draw bonus alien
+        // Draw bonus alien
         for (int index = 0; index < bonusAlienList.size(); index++) {
             bonusAlienList.get(index).bonusDraw(graphics);
         }
 
-        //245 - Sets the score display
+        // Sets the score display
         graphics.setColor(Color.WHITE);
         graphics.drawString("Score: " + score, 260, 20);
 
-        //249 - Create score on top of screen
+        // Create score on top of screen
         graphics.setColor(Color.WHITE);
         graphics.drawString("Lives:", 11, 20);
         for (int index = 0; index < lifeList.size(); index++) {
             lifeList.get(index).lifeCounter(graphics);
         }
 
-        //255 - Create level display
+        // Create level display
         graphics.setColor(Color.WHITE);
         graphics.drawString("Level: " + level, 750, 20);
 
-        //259 - Create highscore display
+        // Create highscore display
         graphics.setColor(Color.WHITE);
         graphics.drawString("Highscore: " + highScore, 440, 20);
 
-        //263 - Create display health of boss
+        // Create display health of boss
+        // TODO use modules as evaluation
         if (level == 3 || level == 6 || level == 9 || level == 12) {
             graphics.setColor(Color.WHITE);
             graphics.drawString("Boss Health: " + bossHealth, 352, 600);
@@ -290,7 +291,7 @@ public class GamePanel extends JPanel {
 
         }
 
-        //288 - Option to reset HighScore
+        // Option to reset HighScore
         if (control.getKeyStatus(82)) {
             int response = JOptionPane.showConfirmDialog(null, "Would you like to reset the high score?", "To be or not to be ...", 0);
             control.resetController();
@@ -298,31 +299,29 @@ public class GamePanel extends JPanel {
                 try {
                     String highScoreString = Integer.toString(0);
                     PrintWriter toFile = new PrintWriter(new FileOutputStream(file, false));
+                    toFile.write(highScoreString);
+                    toFile.close();
                 } catch (FileNotFoundException exception) {
 
                 }
             }
         }
 
-        //302 - Update file
+        // Update file
         // TODO add sorting list and if highscore is in the 3rd place also place it there
         try {
             if (score > highScore) {
                 String highScoreString = Integer.toString(score);
                 PrintWriter toFile = new PrintWriter(new FileOutputStream(file, false));
+                toFile.write(highScoreString);
+                toFile.close();
+
             }
         } catch (FileNotFoundException exception) {
 
         }
 
-        //313 - When aliens reach the end of the board they need to change direction
-//        System.out.println("alienList.size() = " + alienList.size());
-//        System.out.println("alienList.size() - 1) = " + (alienList.size() - 1));
-//        System.out.println("alienList.get(alienList.size() - 1).getXCoordinateValue() = " + alienList.get(alienList.size() - 1).getXCoordinateValue());
-//        System.out.println("alienList.get(alienList.size() - 1) = " + alienList.get(alienList.size() - 1));
-//        System.out.println("alienList.get(alienList.size() - 1).getVelocityY() = " + alienList.get(alienList.size() - 1).getVelocityY());
-//        System.out.println("(alienList.get(alienList.size() - 1).getXCoordinateValue() + alienList.get(alienList.size() - 1).getVelocityY()) = " + (alienList.get(alienList.size() - 1).getXCoordinateValue() + alienList.get(alienList.size() - 1).getVelocityY()));
-//        if ((enemyList.get(enemyList.size() - 1).getXPosition()        + enemyList.get(enemyList.size() - 1).getXVelocity()) > 760 || (enemyList.get(0).getXPosition() + enemyList.get(0).getXVelocity()) < 0) {
+        // When aliens reach the end of the board they need to change direction
         if ((alienList.get(alienList.size() - 1).getXCoordinateValue() + alienList.get(alienList.size() - 1).getVelocityX()) > 760 || (alienList.get(0).getXCoordinateValue() + alienList.get(0).getVelocityX()) < 0) {
             for (int index = 0; index < alienList.size(); index++) {
                 alienList.get(index).setVelocityX(alienList.get(index).getVelocityX() * -1);
@@ -335,18 +334,16 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //325 - Move the projectile when it is fired
+        // Move the projectile when it is fired
         // TODO when difficulty level is chosen use different projectile speed
         if (playerWeapon != null) {
             playerWeapon.setYCoordinateValue(playerWeapon.getYCoordinateValue() - 30);
-            // playerWeapon.setYCoordinateValue(playerWeapon.getYCoordinateValue() - 15);
-            // When projectile has reached the border the player can shoot again.
             // TODO based on difficulty level player should be able to fire 1 or 3 shots in burst
             if (playerWeapon.getYCoordinateValue() < 0) {
                 playerCanFire = true;
             }
 
-            //332 - Check for collisions with regular aliens
+            // Check for collisions with regular aliens
             for (int index = 0; index < alienList.size(); index++) {
                 if (playerWeapon.isColliding(alienList.get(index))) {
                     // TODO Play hit sound if enemy is hit
@@ -354,7 +351,8 @@ public class GamePanel extends JPanel {
                     playerWeapon = new PlayerWeapon(0, 0, 0, null);
                     playerCanFire = true;
 
-                    //339 - When alien is hit score needs to be updated
+                    // When alien is hit score needs to be updated
+                    // TODO improve if statement if mod 3 → if % 3
                     if (level != 3 && level != 6 && level != 9 && level != 12) {
                         score += 100;
                         hitMarker = true;
@@ -384,7 +382,7 @@ public class GamePanel extends JPanel {
                 }
             }
 
-            //361 - Verify if the shields gets damaged by player
+            // Verify if the shields gets damaged by player
             // If one of the shields get it the color changes
             // Looping through the available shields
             // TODO make smarter, duplicate code detected. Maybe Switch-statement?
@@ -416,7 +414,7 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //393 Move bonus alien
+        // Move bonus alien
         if (!bonusAlienList.isEmpty()) {
             for (int index = 0; index < bonusAlienList.size(); index++) {
                 // Todo bonus alien speed dependent on difficulty level
@@ -427,12 +425,11 @@ public class GamePanel extends JPanel {
                     newBonusAlien = true;
                 }
             }
-            //402 - Bonus alien collides with player weapon
+            // Bonus alien collides with player weapon
             for (int index = 0; index < bonusAlienList.size(); index++) {
                 if (playerWeapon != null) {
                     if (bonusAlienList.get(index).isColliding(playerWeapon)) {
                         bonusAlienList.remove(index);
-                        // TODO modify constructor to accept empty parameters
                         playerWeapon = new PlayerWeapon(0, 0, 0, null);
                         playerCanFire = true;
                         newBonusAlien = true;
@@ -444,8 +441,8 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //417 - Drop speed alien bombs
-        // TODO modulus 3
+        // Drop speed alien bombs
+        // TODO improve if statement if mod 3 → if % 3
         if (level != 3 && level != 6 && level != 9 && level != 12) {
             if (alienBomb != null) {
                 for (int index = 0; index < alienBombList.size(); index++) {
@@ -459,14 +456,13 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //428 - Alien boss was faster dropping bombs
-        // TODO modules 3
+        // Alien boss was faster dropping bombs
+        // TODO improve if statement if mod 3 → if % 3
         if (level == 3 || level == 6 || level == 9 || level == 12) {
             if (alienBomb != null) {
                 for (int index = 0; index < alienBombList.size(); index++) {
                     // The higher the level the increased speed of the boss
                     alienBombList.get(index).setYCoordinateValue(alienBombList.get(index).getYCoordinateValue() + (2 * level));
-                    // TODO boardheight variable
                     if (alienBombList.get(index).getYCoordinateValue() > gameHeight) {
                         alienBombList.remove(index);
                     }
@@ -474,7 +470,7 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //440 - Alien bomb collision with shields
+        // Alien bomb collision with shields
         // TODO think of better solution
         try {
             for (int shieldListIndex = 0; shieldListIndex < shieldList.size(); shieldListIndex++) {
@@ -505,7 +501,7 @@ public class GamePanel extends JPanel {
 
         }
 
-        //472 - Check if alien bomb meets player
+        // Check if alien bomb meets player
         for (int index = 0; index < alienBombList.size(); index++) {
             if (alienBombList.get(index).isColliding(playerShip)) {
                 alienBombList.remove(index);
@@ -515,12 +511,12 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //481 - Prevent continues rain of alien bombs. When all bombs are off the screen reset trigger
+        // Prevent continues rain of alien bombs. When all bombs are off the screen reset trigger
         if (alienBombList.isEmpty()) {
             alienCanFire = true;
         }
 
-        //486 - When aliens collide with shields, the shields are removed
+        // When aliens collide with shields, the shields are removed
         for (int alienListIndex = 0; alienListIndex < alienList.size(); alienListIndex++) {
             for (int shieldListIndex = 0; shieldListIndex < shieldList.size(); shieldListIndex++) {
                 if (alienList.get(alienListIndex).isColliding(shieldList.get(shieldListIndex))) {
@@ -528,8 +524,8 @@ public class GamePanel extends JPanel {
                 }
             }
 
-            //494 - When the aliens reaches the outer limit the level will be reset and a life is being reduced
-            // TODO Use boardwidth variable
+            // When the aliens reaches the outer limit the level will be reset and a life is being reduced
+            // TODO Use boardwidth variable boardWith - alienSize
             if (alienList.get(alienListIndex).getYCoordinateValue() + 50 >= 750) {
                 // resetting level
                 // TODO depending on difficulty level same aliens appear or damaged shields won't
@@ -544,7 +540,7 @@ public class GamePanel extends JPanel {
             }
         }
 
-        //506 - Update life counter on display
+        // Update life counter on display
         if (playerShip.isCollided) {
             int index = lifeList.size() - 1;
             lifeList.remove(index);
@@ -552,7 +548,7 @@ public class GamePanel extends JPanel {
             // Player is out of lives
             // TODO Play game over sound
             // Present option to play again or exit the game
-            int response = JOptionPane.showConfirmDialog(null, "Play again?", "You LOST!!! " + "Your score: " + score + " points", 0);
+            int response = JOptionPane.showConfirmDialog(null, "Play again?", "GAME OVER!! " + "Your score: " + score + " points", 0);
             if (response == 0) {
                 // If player chooses to play again all will be cleared and started over
                 lifeList.clear();
@@ -569,7 +565,7 @@ public class GamePanel extends JPanel {
                 newBonusAlien = true;
                 setupGame();
             }
-            //532 - If the player chooses the other option, exit the game
+            // If the player chooses the other option, exit the game
             if (response == 1) {
                 System.exit(0);
             }
@@ -605,10 +601,8 @@ public class GamePanel extends JPanel {
         this.requestFocusInWindow();
     }
 
-    /**
-     * Method to start the Timer that drives the animation for the game. It is
-     * not necessary for you to modify this code unless you need to in order to
-     * add some functionality.
+    /*
+     * Method to start the Timer that drives the animation for the game.
      */
     public void start() {
         // Set up a new Timer to repeat every 20 milliseconds (50 FPS)

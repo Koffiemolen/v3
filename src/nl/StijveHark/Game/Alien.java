@@ -5,13 +5,6 @@ import java.awt.*;
 
 public class Alien extends MovingGameObject{
 
-//    private final ImageIcon alien1 = new ImageIcon("images/alien1Skin.gif");
-//    private final ImageIcon alien2 = new ImageIcon("images/alien2Skin.gif");
-//    private final ImageIcon alien3 = new ImageIcon("images/alien3Skin.gif");
-//    private final ImageIcon alienBoss = new ImageIcon("images/boss1.gif");
-//    private final ImageIcon alienBoss2 = new ImageIcon("images/boss2.gif");
-//    private final ImageIcon alienBoss3 = new ImageIcon("images/boss3.gif");
-
     private final ImageIcon alien1 = new ImageIcon("images/alien-blue.gif");
     private final ImageIcon alien2 = new ImageIcon("images/alien-orange.gif");
     private final ImageIcon alien3 = new ImageIcon("images/alien-red.gif");
