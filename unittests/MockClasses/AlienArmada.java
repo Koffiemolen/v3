@@ -1,6 +1,5 @@
-package logic.entities;
+package MockClasses;
 
-import MockClasses.AlienMock;
 import nl.StijveHark.Game.MovingGameObject;
 import java.util.ArrayList;
 import java.util.Collections;

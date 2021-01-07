@@ -4,12 +4,10 @@ import java.awt.*;
 
 public abstract class MovingGameObject extends GameObject implements Moveable{
 
-    int velocityX;
-    int velocityY;
+    private int velocityX;
+    private int velocityY;
 
     // Aliens cannot be controlled
-
-
     public MovingGameObject(int xValue, int yValue, int velocityX, int velocityY, Color color) {
         super(xValue, yValue, color);
         this.velocityX = velocityX;
@@ -17,11 +15,11 @@ public abstract class MovingGameObject extends GameObject implements Moveable{
     }
 
     public int getVelocityX(){
-        return velocityX;
+        return this.velocityX;
     }
 
     public int getVelocityY(){
-        return velocityY;
+        return this.velocityY;
     }
 
     public void setVelocityX(int velocityX){
@@ -34,7 +32,7 @@ public abstract class MovingGameObject extends GameObject implements Moveable{
 
     // To move non controllable objects
     public void move(){
-        this.velocityX += velocityX;
-        this.velocityY += velocityY;
+        this.velocityX += this.velocityX;
+        this.velocityY += this.velocityY;
     }
 }

@@ -1,5 +1,6 @@
 package logic.entities;
 
+import MockClasses.AlienArmada;
 import MockClasses.AlienMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

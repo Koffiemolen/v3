@@ -1,7 +1,7 @@
 package nl.StijveHark.Game;
 
 import devices.KeyboardControl;
-import provider.Highscore;
+import providers.Highscore;
 import sound.SoundFactory;
 
 import javax.swing.*;
@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
 
     // Store Highscores in file
     // Added new class for this Highscore
-    File file = new File("highscore.dat");
+    File file = new File("/resources/highscore.dat");
 
     private final KeyboardControl control;
     private int score = 0;

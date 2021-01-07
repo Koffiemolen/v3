@@ -8,9 +8,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="control" />
-    <orderEntry type="module" module-name="audio" />
+    <orderEntry type="module" module-name="control" exported="" />
+    <orderEntry type="module" module-name="audio" exported="" />
     <orderEntry type="library" exported="" name="JUnit5.4" level="project" />
-    <orderEntry type="module" module-name="dataAccess" />
+    <orderEntry type="module" module-name="dataaccess" exported="" />
   </component>
 </module>
