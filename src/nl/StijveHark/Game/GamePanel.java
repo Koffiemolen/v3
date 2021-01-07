@@ -1,16 +1,16 @@
 package nl.StijveHark.Game;
 
 import devices.KeyboardControl;
+import provider.Highscore;
 import sound.SoundFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class GamePanel extends JPanel {
 
@@ -25,15 +25,16 @@ public class GamePanel extends JPanel {
     Random random = new Random();
 
     // Store Highscores in file
-    File file = new File("Highscore.txt");
+    // Added new class for this Highscore
+    File file = new File("highscore.dat");
 
     private final KeyboardControl control;
     private int score = 0;
     private int level = 1;
     private int numberOfLives = 3;
-    private int highScore;
     private int hitmarkerX;
     private int hitmarkerY;
+    private String user;
 
     // Objects
     private Ship playerShip;
@@ -45,6 +46,7 @@ public class GamePanel extends JPanel {
     private AlienBomb alienBomb;
     private AlienBomb alienBomb2;
     private AlienBomb alienBomb3;
+    private Highscore highScore = new Highscore();
 
     // Booleans to keep track of certain values
     private boolean playerCanFire = true;
@@ -71,9 +73,7 @@ public class GamePanel extends JPanel {
         return bossHealth;
     }
 
-
     // Setting up the game
-
     public final void setupGame() {
         // TODO use modules as evaluation
         // Formula for normal levels
@@ -139,7 +139,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    //150 - Painting
+    // Painting
     @Override
     public void paint(Graphics graphics) {
         // set background image
@@ -261,9 +261,23 @@ public class GamePanel extends JPanel {
         graphics.setColor(Color.WHITE);
         graphics.drawString("Level: " + level, 750, 20);
 
+        // Verify if highscore is already present
+        if (highScore.getPoints() == -1){
+            // init highscore
+            String oldHighscore = highScore.GetHighScore(file);
+            if(oldHighscore.equals("0")){
+                highScore.setHighscorevalue(0);
+            } else {
+                // Setting highscore from file to highscore
+                user = oldHighscore.split(":")[0];
+                highScore.setPoints(Integer.parseInt(oldHighscore.split(":")[1]));
+            }
+        }
+
+
         // Create highscore display
         graphics.setColor(Color.WHITE);
-        graphics.drawString("Highscore: " + highScore, 440, 20);
+        graphics.drawString("Highscore: " + highScore.getPoints(), 440, 20);
 
         // Create display health of boss
         // TODO use modules as evaluation
@@ -271,55 +285,30 @@ public class GamePanel extends JPanel {
             graphics.setColor(Color.WHITE);
             graphics.drawString("Boss Health: " + bossHealth, 352, 600);
         }
+
     }
 
     // Updating game
     public void updateGameState(int frameNumber) {
 
-        //275 - Allow player to move
+        // Allow player to move
         playerShip.move();
 
-        //278 - Highscore updating
-        try {
-            Scanner fileScan = new Scanner(file);
-            while (fileScan.hasNextInt()) {
-                String nextLine = fileScan.nextLine();
-                Scanner lineScan = new Scanner(nextLine);
-                highScore = lineScan.nextInt();
-            }
-        } catch (FileNotFoundException exception) {
-
-        }
-
-        // Option to reset HighScore
-        if (control.getKeyStatus(82)) {
-            int response = JOptionPane.showConfirmDialog(null, "Would you like to reset the high score?", "To be or not to be ...", 0);
-            control.resetController();
-            if (response == 0) {
-                try {
-                    String highScoreString = Integer.toString(0);
-                    PrintWriter toFile = new PrintWriter(new FileOutputStream(file, false));
-                    toFile.write(highScoreString);
-                    toFile.close();
-                } catch (FileNotFoundException exception) {
-
-                }
-            }
-        }
-
-        // Update file
-        // TODO add sorting list and if highscore is in the 3rd place also place it there
-        try {
-            if (score > highScore) {
-                String highScoreString = Integer.toString(score);
-                PrintWriter toFile = new PrintWriter(new FileOutputStream(file, false));
-                toFile.write(highScoreString);
-                toFile.close();
-
-            }
-        } catch (FileNotFoundException exception) {
-
-        }
+//        // Option to reset HighScore
+//        if (control.getKeyStatus(82)) {
+//            int response = JOptionPane.showConfirmDialog(null, "Would you like to reset the high score?", "To be or not to be ...", 0);
+//            control.resetController();
+//            if (response == 0) {
+//                try {
+//                    String highScoreString = Integer.toString(0);
+//                    PrintWriter toFile = new PrintWriter(new FileOutputStream(file, false));
+//                    toFile.write(highScoreString);
+//                    toFile.close();
+//                } catch (FileNotFoundException exception) {
+//
+//                }
+//            }
+//        }
 
         // When aliens reach the end of the board they need to change direction
         if ((alienList.get(alienList.size() - 1).getXCoordinateValue() + alienList.get(alienList.size() - 1).getVelocityX()) > 760 || (alienList.get(0).getXCoordinateValue() + alienList.get(0).getVelocityX()) < 0) {
@@ -350,7 +339,7 @@ public class GamePanel extends JPanel {
                     sounds.explosion();
                     playerWeapon = new PlayerWeapon(0, 0, 0, null);
                     playerCanFire = true;
-
+                    highScore.setHighscorevalue(score);
                     // When alien is hit score needs to be updated
                     // TODO improve if statement if mod 3 → if % 3
                     if (level != 3 && level != 6 && level != 9 && level != 12) {
@@ -362,6 +351,7 @@ public class GamePanel extends JPanel {
                         hitmarkerY = alienList.get(index).getYCoordinateValue();
                         // After the marker has shown alien can be removed
                         alienList.remove(index);
+                        highScore.setHighscorevalue(score);
                     }
 
                     //347 When alien bos is hit the hit score needs to be updated
@@ -377,6 +367,7 @@ public class GamePanel extends JPanel {
                             alienList.remove(index);
                             // Special bonus for defeating alien boss
                             score += 9000;
+                            highScore.setHighscorevalue(score);
                         }
                     }
                 }
@@ -436,6 +427,7 @@ public class GamePanel extends JPanel {
                         // TODO play sound bonus alien hit
                         // When bonus alien is hit extra points
                         score += 5000;
+                        highScore.setHighscorevalue(score);
                     }
                 }
             }
@@ -537,6 +529,10 @@ public class GamePanel extends JPanel {
                 numberOfLives -= 1;
                 // TODO play sound player looses
                 setupGame();
+                if(score <= highScore.getPoints()) {
+                    String name = JOptionPane.showInputDialog("You have beaten: " + user + " You set a new highscore!. What is your name?", "User");
+                    highScore.registerNewHighscore(file, name);
+                }
             }
         }
 
@@ -548,6 +544,10 @@ public class GamePanel extends JPanel {
             // Player is out of lives
             // TODO Play game over sound
             // Present option to play again or exit the game
+            if(score <= highScore.getPoints()) {
+                String name = JOptionPane.showInputDialog("You set a new highscore!. What is your name?", "User");
+                highScore.registerNewHighscore(file, name);
+            }
             int response = JOptionPane.showConfirmDialog(null, "Play again?", "GAME OVER!! " + "Your score: " + score + " points", 0);
             if (response == 0) {
                 // If player chooses to play again all will be cleared and started over

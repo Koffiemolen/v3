@@ -1,0 +1,3 @@
+module dataAccess {
+    exports provider;
+}
